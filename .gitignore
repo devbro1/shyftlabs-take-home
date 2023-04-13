@@ -1,0 +1,12 @@
+backend/vendor
+backend/bootstrap/cache
+backend/.php-cs-fixer.cache
+docker/ssh/*
+frontend/node_modules
+frontend/build/
+frontend/.eslintcache
+frontend/test-results/
+frontend/.env
+frontend/src/env.json
+devbro-front/.env
+.vscode/

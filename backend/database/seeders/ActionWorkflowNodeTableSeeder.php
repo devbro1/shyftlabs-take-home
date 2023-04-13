@@ -1,0 +1,173 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class ActionWorkflowNodeTableSeeder extends Seeder
+{
+    /**
+     * Auto generated seed file.
+     */
+    public function run()
+    {
+        \DB::table('action_workflow_node')->delete();
+
+        \DB::table('action_workflow_node')->insert([
+            0 => [
+                'id' => 1,
+                'created_at' => '2022-10-11 03:30:12',
+                'updated_at' => '2022-10-11 03:30:12',
+                'alternative_name' => 'Verify Customer Info',
+                'status_to_id' => 2,
+                'action_id' => 3,
+                'workflow_node_id' => 1,
+                'permission_id' => null,
+                'variables' => '{"confirmation_message": "Did you Reivew Customer Info?"}',
+            ],
+            1 => [
+                'id' => 8,
+                'created_at' => '2023-01-29 23:30:11',
+                'updated_at' => '2023-01-29 23:30:11',
+                'alternative_name' => 'Update Quote',
+                'status_to_id' => null,
+                'action_id' => 7,
+                'workflow_node_id' => 16,
+                'permission_id' => null,
+                'variables' => '{"key": "quoted_invoice", "total_required": "1"}',
+            ],
+            2 => [
+                'id' => 9,
+                'created_at' => '2023-01-29 23:30:11',
+                'updated_at' => '2023-01-29 23:30:11',
+                'alternative_name' => 'Sell',
+                'status_to_id' => 17,
+                'action_id' => 7,
+                'workflow_node_id' => 16,
+                'permission_id' => null,
+                'variables' => '{"key": "sale_invoice", "pre_fill": "quoted_invoice", "total_required": "1"}',
+            ],
+            3 => [
+                'id' => 10,
+                'created_at' => '2023-01-29 23:30:11',
+                'updated_at' => '2023-01-29 23:30:11',
+                'alternative_name' => 'Cancel',
+                'status_to_id' => 20,
+                'action_id' => 3,
+                'workflow_node_id' => 16,
+                'permission_id' => null,
+                'variables' => '{"confirmation_message": "Are you sure you want to cancel this lead?"}',
+            ],
+            4 => [
+                'id' => 11,
+                'created_at' => '2023-01-29 23:35:18',
+                'updated_at' => '2023-01-29 23:35:18',
+                'alternative_name' => 'Complete',
+                'status_to_id' => 19,
+                'action_id' => 7,
+                'workflow_node_id' => 17,
+                'permission_id' => null,
+                'variables' => '{"key": "completed_invoice", "pre_fill": "sale_invoice", "total_required": "1"}',
+            ],
+            5 => [
+                'id' => 12,
+                'created_at' => '2023-01-29 23:35:18',
+                'updated_at' => '2023-01-29 23:35:18',
+                'alternative_name' => 'Cancel',
+                'status_to_id' => 21,
+                'action_id' => 3,
+                'workflow_node_id' => 17,
+                'permission_id' => null,
+                'variables' => '{"confirmation_message": "Are you sure you want to cancel this lead?"}',
+            ],
+            6 => [
+                'id' => 13,
+                'created_at' => '2023-01-29 23:36:46',
+                'updated_at' => '2023-01-30 00:00:30',
+                'alternative_name' => 'Mark As Stale',
+                'status_to_id' => null,
+                'action_id' => 6,
+                'workflow_node_id' => 13,
+                'permission_id' => null,
+                'variables' => '{"duration": "2880"}',
+            ],
+            7 => [
+                'id' => 3,
+                'created_at' => '2023-01-29 23:24:17',
+                'updated_at' => '2023-01-30 00:00:30',
+                'alternative_name' => 'Cancel',
+                'status_to_id' => 22,
+                'action_id' => 3,
+                'workflow_node_id' => 13,
+                'permission_id' => null,
+                'variables' => '{"force_action": null, "confirmation_message": "Are you sure you want to cancel this lead?"}',
+            ],
+            8 => [
+                'id' => 2,
+                'created_at' => '2022-12-12 01:50:17',
+                'updated_at' => '2023-01-30 00:00:30',
+                'alternative_name' => 'Acknowledge',
+                'status_to_id' => null,
+                'action_id' => 4,
+                'workflow_node_id' => 13,
+                'permission_id' => null,
+                'variables' => '{"force_action": "1", "confirmation_message": null}',
+            ],
+            9 => [
+                'id' => 14,
+                'created_at' => '2023-01-29 23:48:57',
+                'updated_at' => '2023-01-30 00:00:46',
+                'alternative_name' => 'Mark As Stale',
+                'status_to_id' => null,
+                'action_id' => 6,
+                'workflow_node_id' => 14,
+                'permission_id' => null,
+                'variables' => '{"duration": "10080"}',
+            ],
+            10 => [
+                'id' => 5,
+                'created_at' => '2023-01-29 23:26:54',
+                'updated_at' => '2023-01-30 00:00:46',
+                'alternative_name' => 'Book Appointment',
+                'status_to_id' => 15,
+                'action_id' => 2,
+                'workflow_node_id' => 14,
+                'permission_id' => null,
+                'variables' => '{"date_type": "appoitment_date", "can_add_appointment_on_spot": "1"}',
+            ],
+            11 => [
+                'id' => 4,
+                'created_at' => '2023-01-29 23:25:34',
+                'updated_at' => '2023-01-30 00:00:46',
+                'alternative_name' => 'Cancel',
+                'status_to_id' => 22,
+                'action_id' => 3,
+                'workflow_node_id' => 14,
+                'permission_id' => null,
+                'variables' => '{"force_action": null, "confirmation_message": "Are you sure you want to cancel this lead?"}',
+            ],
+            12 => [
+                'id' => 6,
+                'created_at' => '2023-01-29 23:27:57',
+                'updated_at' => '2023-01-30 00:01:00',
+                'alternative_name' => 'Quote',
+                'status_to_id' => 16,
+                'action_id' => 7,
+                'workflow_node_id' => 15,
+                'permission_id' => null,
+                'variables' => '{"key": "quoted_invoice", "total_required": "1"}',
+            ],
+            13 => [
+                'id' => 7,
+                'created_at' => '2023-01-29 23:27:57',
+                'updated_at' => '2023-01-30 00:01:00',
+                'alternative_name' => 'Cancel',
+                'status_to_id' => 22,
+                'action_id' => 3,
+                'workflow_node_id' => 15,
+                'permission_id' => null,
+                'variables' => '{"force_action": null, "confirmation_message": "Are you sure you want to cancel this lead?"}',
+            ],
+        ]);
+    }
+}
