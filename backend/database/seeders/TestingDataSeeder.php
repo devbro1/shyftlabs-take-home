@@ -13,5 +13,6 @@ class TestingDataSeeder extends Seeder
     public function run()
     {
         $this->call(StudentSeeder::class);
+        $this->call(CourseSeeder::class);
     }
 }
