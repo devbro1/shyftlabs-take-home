@@ -49,7 +49,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        $validated_data = Student::validate($request, $course);
+        $validated_data = Course::validate($request, $course);
         $course->update($validated_data);
 
         return ['message' => 'Course was updated successfully', 'data' => $course];

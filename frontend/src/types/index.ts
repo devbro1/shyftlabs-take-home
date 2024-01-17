@@ -56,3 +56,8 @@ export interface StudentType {
     email: string;
     date_of_birth: string;
 }
+
+export interface CourseType {
+    id: number;
+    name: string;
+}

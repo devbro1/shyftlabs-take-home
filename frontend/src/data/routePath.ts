@@ -41,4 +41,9 @@ export const __RoutePath = {
         new: () => `/students/new`,
         edit: (day: any) => `/students/${day}`,
     },
+    course: {
+        __index: `/course`,
+        new: () => `/course/new`,
+        edit: (day: any) => `/course/${day}`,
+    },
 };

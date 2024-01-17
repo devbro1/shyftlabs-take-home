@@ -2,10 +2,6 @@ import { RoutePath } from 'data';
 import {
     FaBeer,
     FaDatabase,
-    FaDisease,
-    FaExchangeAlt,
-    FaFileExport,
-    FaHospitalSymbol,
     FaNewspaper,
     FaUser,
 } from 'react-icons/fa';
@@ -34,14 +30,21 @@ export const __SideNavOptions = [
     {
         url: RoutePath.student.__index,
         title: 'Students and Courses',
-        icon: FaNewspaper,
-        patterns: ['/students/*'],
+        icon: FaDatabase,
+        patterns: ['/students/*', '/courses/*'],
         children: [
             { url: RoutePath.student.__index, title: 'Students List', icon: FaBeer },
             {
                 url: RoutePath.student.new(),
                 title: 'Add New Students',
                 permissions: ['create students'],
+            },
+
+            { url: RoutePath.course.__index, title: 'Courses List', icon: FaBeer },
+            {
+                url: RoutePath.course.new(),
+                title: 'Add New Courses',
+                permissions: ['create courses'],
             },
         ],
     },

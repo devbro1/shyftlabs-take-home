@@ -49,4 +49,7 @@ export const __APIPath = {
     student: {
         index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}students/${id ? id : ''}`,
     },
+    course: {
+        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}courses/${id ? id : ''}`,
+    },
 };

@@ -2,8 +2,8 @@ import { APIPath } from 'data';
 import React from 'react';
 import { __RestAPI as RestAPI } from 'scripts/api';
 import { __AnnouncementFormStyle as Styles } from './form.styles';
-import { StudentType } from 'types';
-import { DateTimePickerComp, FormComp, TextInputComp } from 'utils';
+import { CourseType } from 'types';
+import { FormComp, TextInputComp } from 'utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -13,25 +13,22 @@ import { alertService } from 'helperComps/Alert/AlertService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 
-const StudentFormComp: React.FC = () => {
+const CourseFormComp: React.FC = () => {
     const id: number = parseInt(useParams<any>().id || '0');
 
     const validationSchema = yup.object().shape({
-        first_name: yup.string().required(),
-        family_name: yup.string().required(),
-        email: yup.string().email().required(),
-        date_of_birth: yup.string().required(),
+        name: yup.string().required(),
     });
 
     const queryClient = useQueryClient();
 
-    const { data, isLoading } = useQuery<StudentType, Error>(['studentData', { id: id }], (params: any) => {
+    const { data, isLoading } = useQuery<CourseType, Error>(['courseData', { id: id }], (params: any) => {
         const [, { id }] = params.queryKey;
 
         if (id) {
-            return RestAPI.get<StudentType>(APIPath.student.index(id))
+            return RestAPI.get<CourseType>(APIPath.course.index(id))
                 .then((response2) => {
-                    const response: StudentType = response2.data;
+                    const response: CourseType = response2.data;
 
                     reset(response);
                     return response;
@@ -40,7 +37,7 @@ const StudentFormComp: React.FC = () => {
                     throw ex;
                 });
         } else {
-            return {} as StudentType;
+            return {} as CourseType;
         }
     });
 
@@ -52,8 +49,8 @@ const StudentFormComp: React.FC = () => {
     const mutator = useMutation(
         (data: any) => {
             let apiCall;
-            if (id) apiCall = RestAPI.put(APIPath.student.index(id), data);
-            else apiCall = RestAPI.post(APIPath.student.index(), data);
+            if (id) apiCall = RestAPI.put(APIPath.course.index(id), data);
+            else apiCall = RestAPI.post(APIPath.course.index(), data);
 
             return apiCall;
         },
@@ -69,14 +66,13 @@ const StudentFormComp: React.FC = () => {
             },
             onSuccess: (data: any) => {
                 if (id) {
-                    alertService.success('Student was updated successfully');
+                    alertService.success('Course was updated successfully');
                 } else {
-                    alertService.success('Student was created successfully');
+                    alertService.success('Course was created successfully');
                     reset();
-                    //navigate(RoutePath.student.edit(data.data.data.id));
                 }
 
-                queryClient.setQueryData<StudentType>(['studentData', { id: id }], data.data.data);
+                queryClient.setQueryData<CourseType>(['courseData', { id: id }], data.data.data);
 
                 return data.data.data;
             },
@@ -96,40 +92,22 @@ const StudentFormComp: React.FC = () => {
             onSubmit={handleSubmit(() => {
                 mutator.mutate(getValues());
             })}
-            title={id ? 'Update Student: ' + getValues('email') : 'Create New Student'}
+            title={id ? 'Update Course: ' + getValues('name') : 'Create New Course'}
             className={Styles.root}
             buttonTitle={id ? 'Update' : 'Create'}
         >
             <div className={Styles.row}>
                 <TextInputComp
                     className={Styles.fields()}
-                    name="first_name"
+                    name="name"
                     control={control}
                     type="text"
-                    title="First Name"
+                    title="Name"
                 />
-                <TextInputComp
-                    className={Styles.fields()}
-                    name="family_name"
-                    control={control}
-                    type="text"
-                    title="Family Name"
-                />
-            </div>
-            <div className={Styles.row}>
-                <TextInputComp className={Styles.fields()} name="email" control={control} type="text" title="Email" />
-                <DateTimePickerComp
-                    showTime={false}
-                    className={Styles.fields()}
-                    name="date_of_birth"
-                    control={control}
-                    type="text"
-                    title="Date Of Birth"
-                    outputFormat="YYYY-MM-DD"
-                />
+              
             </div>
         </FormComp>
     );
 };
 
-export default StudentFormComp;
+export default CourseFormComp;
