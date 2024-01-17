@@ -27,7 +27,7 @@ const FooterComp: React.FC = () => {
             </div> */}
             <div className={Styles.lastRow}>
                 <div className={Styles.lastRowContainer}>
-                    © {new Date().getFullYear()} Reformulary Group<span className={Styles.lastRowItem}>-</span>
+                    © {new Date().getFullYear()} Devbro<span className={Styles.lastRowItem}>-</span>
                     {/* <Link title="" to="/">
                         Privacy
                     </Link>
