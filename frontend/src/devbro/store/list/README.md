@@ -1,3 +1,0 @@
-### StoreListComp
-
-store list page

@@ -7,10 +7,15 @@ fi
 
 #export PS1="\u@$(ip addr show dev eth0 | grep "inet " | cut -d" " -f6) \W\\$ "
 # User specific aliases and functions
-source /usr/share/git-core/contrib/completion/git-prompt.sh
+source /usr/share/git-core/contrib/completion/git-prompt.sh #AL2
+# source /usr/lib/git-core/git-sh-prompt #ubuntu
 export PS1='\[\033[32m\]\t \u@$(cat /etc/hostname) \[\033[01;30m\][\[\033[00m\]\h\[\033[01;30m\]:\[\033[0;36m\]\w$(__git_ps1 "\[\033[00;32m\]@ \[\033[01;32m\]%s")\[\033[01;30m\]]\[\033[00m\]\n\$ '
 export PATH=$PATH:/root/.config/composer/vendor/bin/
 export PGPASSWORD="postgres"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 psqll() {
     DB_NAME="${@:-practice_db_1}"
@@ -31,4 +36,13 @@ monitor_log()
     truncate -s 0 $@
     clear
     tail -f $@
+}
+
+send_to_qa()
+{
+    BRANCH=$(git branch --show-current)
+    git pull --no-edit origin $BRANCH && git push origin $BRANCH;
+    git checkout qa && git pull --no-edit origin qa master && git merge --no-edit $BRANCH;
+    git push origin qa;
+    git checkout $BRANCH;
 }

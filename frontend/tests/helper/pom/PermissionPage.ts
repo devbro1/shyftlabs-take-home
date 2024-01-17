@@ -1,5 +1,5 @@
 import BasePage from './BasePage';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 export default class PermissionPage extends BasePage {
     async goto(data = {}) {

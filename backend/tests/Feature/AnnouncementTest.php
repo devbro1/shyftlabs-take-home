@@ -14,7 +14,7 @@ test('testGetAnnouncementList', function () {
 });
 
 test('testCreateUpdateShowDeleteAnnouncement', function () {
-    $user = User::permission('Create Announcement')->first();
+    $user = User::permission('create announcement')->first();
 
     $response = $this->actingAs($user)->post('/api/v1/announcements', ['title' => 'not enough']);
     $response->assertStatus(422);

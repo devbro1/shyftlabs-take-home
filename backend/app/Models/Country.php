@@ -13,18 +13,8 @@ class Country extends Model
     protected $primaryKey = 'code';
     public $timestamps = false;
 
-    /**
-     * The data type of the auto-incrementing ID.
-     *
-     * @var string
-     */
     protected $keyType = 'string';
 
-    /**
-     * The relationships that should always be loaded.
-     *
-     * @var array
-     */
     protected $with = ['provinces'];
 
     public function provinces()

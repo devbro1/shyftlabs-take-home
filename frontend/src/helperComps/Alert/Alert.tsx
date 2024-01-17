@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IoClose, IoInformationCircle } from 'react-icons/io5';
 import { BiMessageAltError } from 'react-icons/bi';
 import { RiErrorWarningLine } from 'react-icons/ri';

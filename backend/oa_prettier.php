@@ -90,14 +90,14 @@ class OAAnnotationGenerator
                 $rc .= "\n".$pad.')';
             // if($tokens[$i+1]['type'] ==DocLexer::T_COMMA)
             // {
-                //     $i++;
-                //     $rc .= ',' . "\n$pad";
+            //     $i++;
+            //     $rc .= ',' . "\n$pad";
             // }
             } elseif (DocLexer::T_IDENTIFIER == $token['type'] && DocLexer::T_EQUALS == $tokens[$i + 1]['type'] && DocLexer::T_STRING == $tokens[$i + 2]['type'] && DocLexer::T_COMMA == $tokens[$i + 3]['type']) {
-                $rc .= $token['value'].'='.'"'.$tokens[$i + 2]['value'].'"'.','."\n{$pad}";
+                $rc .= $token['value'].'="'.$tokens[$i + 2]['value'].'",'."\n{$pad}";
                 $i += 3;
             } elseif (DocLexer::T_IDENTIFIER == $token['type'] && DocLexer::T_EQUALS == $tokens[$i + 1]['type'] && DocLexer::T_INTEGER == $tokens[$i + 2]['type'] && DocLexer::T_COMMA == $tokens[$i + 3]['type']) {
-                $rc .= $token['value'].'='.''.$tokens[$i + 2]['value'].''.','."\n{$pad}";
+                $rc .= $token['value'].'='.$tokens[$i + 2]['value'].','."\n{$pad}";
                 $i += 3;
             } elseif (DocLexer::T_IDENTIFIER == $token['type']) {
                 $rc .= $token['value'];

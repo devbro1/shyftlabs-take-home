@@ -1,4 +1,5 @@
 import { Control, FieldValues } from 'react-hook-form';
+import { SelectOption } from 'types';
 
 export interface __MultiSelectProps {
     control: Control<FieldValues, object>;
@@ -8,7 +9,7 @@ export interface __MultiSelectProps {
     type?: 'text' | 'number' | 'password';
     placeholder?: string;
     className?: string;
-    options?: __MultiSelectOptionType[];
+    options?: __MultiSelectOptionType[] | SelectOption[];
 }
 
 export interface __MultiSelectOptionType {

@@ -11,7 +11,7 @@ import { APIPath } from 'data';
 
 const backendOptions = {
     loadPath: APIPath.translation.cached('{{lng}}/{{ns}}'), //{{lng}}|{{ns}}
-    //addPath: '', // path to send missing translations to
+    addPath: APIPath.translation.missing('{{lng}}/{{ns}}'), // path to send missing translations to
     // request: (options: any, url: any, payload: any, callback: any) => {
     //     try {
     //         RestAPI.get(url).then((res) => {
@@ -40,8 +40,10 @@ i18n
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
         fallbackLng: 'en',
-        debug: true,
+        debug: false,
         backend: backendOptions,
+        saveMissing: true,
+        returnNull: false,
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
         },

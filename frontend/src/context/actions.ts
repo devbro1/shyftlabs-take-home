@@ -30,3 +30,25 @@ export function globalStateSetter(e: AppContextActionType[], state: AppContextTy
     }
     return newState;
 }
+
+export function canUser(perms: any, context: AppContextType, any = false): boolean {
+    if (!context.user) {
+        return false;
+    }
+
+    if (Array.isArray(perms)) {
+        const intersect = perms.filter((obj: any) => {
+            return context.user?.all_permissions.includes(obj);
+        });
+
+        if (any && intersect.length === 0) {
+            return false;
+        } else if (!any && intersect.length != perms.length) {
+            return false;
+        }
+    } else {
+        return context.user?.all_permissions.includes(perms);
+    }
+
+    return true;
+}

@@ -1,10 +1,10 @@
 import { GlobalContext } from './index';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppContextActionType, AppContextType } from '../types';
 import { globalStateSetter } from './actions';
 import { globalContextInitialValue } from './value';
 
-const ContainerComp: React.FC = (props: any) => {
+function ContainerComp(props: any) {
     // define the context value ( the global state )
     // overriding the useless update function that defined in initial value and making it functional.
     const [globalState, setGlobalState] = useState<AppContextType>({
@@ -22,6 +22,6 @@ const ContainerComp: React.FC = (props: any) => {
     }
 
     return <GlobalContext.Provider value={globalState}>{props.children}</GlobalContext.Provider>;
-};
+}
 
 export default ContainerComp;

@@ -2,28 +2,28 @@ import React, { useState } from 'react';
 import { FaSort, FaSortDown, FaSortUp, FaSpinner } from 'react-icons/fa';
 import { __DataTableProps, __DataTableColumnType } from './dataTable.types';
 import { __FullPageLoadingStyles as Styles } from './dataTable.styles';
-import { ButtonComp, PaginationComp } from 'utils';
-import { __tablePDFGenerator } from './dataTable.scripts';
+import { PaginationComp } from 'utils';
 import { useForm } from 'react-hook-form';
+import _ from 'lodash';
 
 // Data table component for list rendering
 function __DataTableComp(props: __DataTableProps) {
     const [sortField, setSortField] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<string>('');
-    const { register, watch } = useForm({});
+    const { control, register, watch, setValue } = useForm({});
 
     React.useEffect(() => {
         const subscription = watch((value, {}) => onFilterChange(value));
         return () => subscription.unsubscribe();
     }, [watch]);
 
-    // pdf file download handler
-    function downloadPDF() {
-        // if implementer component set url, get all data by api call (url base, not data base)
-        return new Promise(() => {
-            __tablePDFGenerator(props.data, props.columns);
-        });
-    }
+    React.useEffect(() => {
+        if (props?.defautlFilters) {
+            _.forEach(props?.defautlFilters, (v, k) => {
+                setValue(k, v);
+            });
+        }
+    }, []);
 
     function onSortChange(field: string) {
         let dir = '';
@@ -41,7 +41,6 @@ function __DataTableComp(props: __DataTableProps) {
     }
 
     function onFilterChange(e: any) {
-        console.log(e);
         props.onChange({ filters: e });
     }
 
@@ -70,7 +69,9 @@ function __DataTableComp(props: __DataTableProps) {
                 {props.data.map((data, i) => (
                     <tr key={i}>
                         {props.columns.map((col, j) => (
-                            <td key={j}>{col.value(data)}</td>
+                            <td key={j} className={col.className || ''}>
+                                {col.value(data)}
+                            </td>
                         ))}
                     </tr>
                 ))}
@@ -106,7 +107,7 @@ function __DataTableComp(props: __DataTableProps) {
                                 }
 
                                 let filter = null;
-                                if (col.filter) {
+                                if (col.filter === true) {
                                     filter = (
                                         <div className="filter-container">
                                             <input
@@ -116,10 +117,16 @@ function __DataTableComp(props: __DataTableProps) {
                                             />
                                         </div>
                                     );
+                                } else if (col.filter) {
+                                    filter = (
+                                        <div className="filter-container">
+                                            {col.filter({ control, register, Styles })}
+                                        </div>
+                                    );
                                 }
 
                                 return (
-                                    <th key={index}>
+                                    <th key={index} className={col.className || ''}>
                                         {/* header title & sort sign */}
                                         <div
                                             onClick={() => {
@@ -148,8 +155,11 @@ function __DataTableComp(props: __DataTableProps) {
                     onChange={onPageChange}
                     onPageSizeChange={onPaginationChange}
                     options={props.paginationSizes}
-                />
-                <ButtonComp onClick={downloadPDF}>Download PDF</ButtonComp>
+                />{' '}
+                <p>
+                    {' '}
+                    Showing {props.from} to {props.to} of {props.total}
+                </p>
             </div>
         </div>
     );

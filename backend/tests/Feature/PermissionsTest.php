@@ -2,7 +2,7 @@
 
 use App\models\User;
 
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 
 test('testGetAllPermissions', function () {
     $user = User::role('super-admin')->first();
@@ -19,12 +19,12 @@ test('testGetAPermissions', function () {
 test('testCreateAndUpdatePermissions', function () {
     $user = User::role('super-admin')->first();
     $data = [];
-    $data['name'] = faker()->words(3, true);
+    $data['name'] = fake()->words(3, true);
     $data['description'] = 'test';
     $response = $this->actingAs($user)->post('/api/v1/permissions/', $data);
     $response->assertStatus(200);
 
-    $data['name'] = faker()->words(3, true);
+    $data['name'] = fake()->words(3, true);
     $data['description'] = 'test2';
     $response = $this->actingAs($user)->put('/api/v1/permissions/'.$response->json()['data']['id'], $data);
     $response->assertStatus(200);
@@ -36,7 +36,7 @@ test('testCreateAndUpdatePermissions', function () {
 test('testSystemPermissions', function () {
     $user = User::role('super-admin')->first();
     $data = [];
-    $data['name'] = faker()->words(3, true);
+    $data['name'] = fake()->words(3, true);
     $data['description'] = 'test2';
     $response = $this->actingAs($user)->put('/api/v1/permissions/2', $data);
     $response->assertStatus(403);

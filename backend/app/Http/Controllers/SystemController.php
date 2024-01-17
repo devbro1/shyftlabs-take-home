@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+/**
+ * @group System
+ */
 class SystemController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/v1/phpinfo/",
-     *     summary="get phpinfo() output",
-     *     tags={"System"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
-     */
     public function phpinfo()
     {
-        //  phpinfo();
         $rc = [];
         $rc['version'] = phpversion();
         $rc['system'] = php_uname();
@@ -60,5 +53,10 @@ class SystemController extends Controller
         }
 
         return $rc;
+    }
+
+    public function ping(Request $request)
+    {
+        return response('pong');
     }
 }

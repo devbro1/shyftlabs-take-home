@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Support\Reflector;
@@ -17,7 +16,7 @@ class ImplicitBindingFixerMiddleware
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, \Closure $next)
     {
         // make sure all outputs are json and not html
         $request->headers->set('Accept', 'application/json');

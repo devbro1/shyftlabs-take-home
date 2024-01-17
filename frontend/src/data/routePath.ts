@@ -31,51 +31,37 @@ export const __RoutePath = {
         new: () => `${__RoutePath.user.__index}/new`,
         edit: (id: routeParam) => `${__RoutePath.user.__index}/${id}`,
     },
-    service: {
-        __index: `/services`,
-        new: () => `${__RoutePath.service.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.service.__index}/${id}`,
-        availability: (params: string | string[][] | Record<string, string> | URLSearchParams | undefined) => {
-            const query = new URLSearchParams(params);
-
-            return `${__RoutePath.service.__index}/service-availabilities?` + query.toString();
-        },
-    },
-    lead: {
-        __index: `/leads`,
-        new: () => `${__RoutePath.lead.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.lead.__index}/${id}`,
-        action: (id: routeParam, action: string) => `${__RoutePath.lead.__index}/${id}/actions/${action}`,
-    },
-    store: {
-        __index: `/stores`,
-        new: () => `${__RoutePath.store.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.store.__index}/${id}`,
-    },
-    company: {
-        __index: `/companies`,
-        new: () => `${__RoutePath.company.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.company.__index}/${id}`,
-    },
-    workflow: {
-        __index: `/workflows`,
-        new: () => `${__RoutePath.workflow.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.workflow.__index}/${id}`,
-        editNode: (id: routeParam, action_id: routeParam) => `${__RoutePath.workflow.__index}/${id}/nodes/${action_id}`,
-    },
-    action: {
-        __index: `/actions`,
-        edit: (id: routeParam) => `${__RoutePath.action.__index}/${id}`,
-    },
     translation: {
         __index: `/translations`,
         new: () => `${__RoutePath.translation.__index}/new`,
         edit: (id: routeParam) => `${__RoutePath.translation.__index}/${id}`,
     },
-    appointment: {
-        __index: `/appointments`,
-        new: () => `/appointments/new`,
-        days: (day: any) => `/appointments/days/${day}`,
-        weeks: (week: any) => `/appointments/weeks/${week}`,
+    drug: {
+        __index: `/drugs`,
+        import: `/drugs/import`,
+        new: () => `/drugs/new`,
+        edit: (day: any) => `/drugs/${day}`,
+        audits: (day: any) => `/drugs/${day}/audits`,
+        processor: () => `${__RoutePath.drug.__index}/processors/`,
+    },
+    healthCanada: {
+        __index: `/health-canada`,
+        noc: `/health-canada/noc`,
+        dpd: `/health-canada/dpd`,
+    },
+    changeRequest: {
+        __index: `/change-requests`,
+        edit: (id: routeParam) => `${__RoutePath.changeRequest.__index}/${id}`,
+        processor: () => `${__RoutePath.changeRequest.__index}/processors/`,
+    },
+    export: {
+        __index: `/exports`,
+        new: () => `${__RoutePath.export.__index}/new`,
+        edit: (id: routeParam) => `${__RoutePath.export.__index}/${id}`,
+    },
+    disorder: {
+        __index: `/disorders`,
+        new: () => `${__RoutePath.disorder.__index}/new`,
+        edit: (id: routeParam) => `${__RoutePath.disorder.__index}/${id}`,
     },
 };

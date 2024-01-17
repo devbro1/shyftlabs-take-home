@@ -8,19 +8,11 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\Client as OauthClient;
 use App\Models\User;
 
+/**
+ * @group Token and Login
+ */
 class TokenController extends Controller
 {
-    /**
-     * @OA\Post(
-     *     path="/api/v1/tokens/login",
-     *     tags={"Tokens"},
-     *     summary="Login process",
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
-     */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -61,47 +53,6 @@ class TokenController extends Controller
         return response(['user' => $user, 'access_token' => $accessToken]);
     }
 
-    /**
-     * @OA\Get(
-     *     tags={"Tokens"},
-     *     path="/api/v1/tokens/ping",
-     *     summary="just sends OK, use for verifying connection",
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK",
-     *         @OA\JsonContent(
-     *             @OA\Examples(
-     *                 example="result",
-     *                 summary="",
-     *                 value={"OK"}
-     *             )
-     *         )
-     *     )
-     * )
-     */
-    public function ping(Request $request)
-    {
-        return response(['OK']);
-    }
-
-    /**
-     * @OA\Get(
-     *     tags={"Tokens"},
-     *     path="/api/v1/users/logout",
-     *     summary="ends user session",
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK",
-     *         @OA\JsonContent(
-     *             @OA\Examples(
-     *                 example="result",
-     *                 summary="",
-     *                 value={"OK"}
-     *             )
-     *         )
-     *     )
-     * )
-     */
     public function logout()
     {
         if (Auth::check()) {
@@ -111,24 +62,6 @@ class TokenController extends Controller
         return response(['OK']);
     }
 
-    /**
-     * @OA\Get(
-     *     tags={"Tokens"},
-     *     path="/api/v1/tokens/secret",
-     *     summary="get secret for client_id=2",
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK",
-     *         @OA\JsonContent(
-     *             @OA\Examples(
-     *                 example="result",
-     *                 summary="",
-     *                 value={"secret": "PUzoFK3uGXZJTJi5bsrJdnQ1mpVU6H2OM7YYlRz7"}
-     *             )
-     *         )
-     *     )
-     * )
-     */
     public function getSecret()
     {
         $token = '';
@@ -139,37 +72,11 @@ class TokenController extends Controller
         return ['secret' => $token];
     }
 
-    /**
-     * @OA\Get(
-     *     tags={"User Management"},
-     *     path="/api/v1/tokens/impersonate/{user_id}",
-     *     summary="Summary",
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         description="User ID",
-     *         required=true,
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not Found"
-     *     )
-     * )
-     */
     public function impersonate(Request $request, User $user)
     {
         $token = $user->createToken('authtoken')->accessToken;
 
         return response(['user' => $user, 'access_token' => $token, 'expires_in' => 3600 * 24 * 30])
-            ->cookie('Authorization_token', $token, 120)
-        ;
+            ->cookie('Authorization_token', $token, 120);
     }
 }

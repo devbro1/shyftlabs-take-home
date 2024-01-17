@@ -37,7 +37,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $user->isAllowedAny(['Create Permission']);
+        return $user->isAllowedAny(['create permission']);
     }
 
     /**
@@ -51,7 +51,7 @@ class PermissionPolicy
             abort(403, 'Cannot edit system permission');
         }
 
-        return $user->isAllowedAny(['Update Permission']);
+        return $user->isAllowedAny(['update permission']);
     }
 
     /**
@@ -65,7 +65,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->isAllowedAny(['Update Permission']);
+        return $user->isAllowedAny(['update permission']);
     }
 
     // /**

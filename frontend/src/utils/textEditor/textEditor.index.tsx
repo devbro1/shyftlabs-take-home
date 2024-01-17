@@ -36,7 +36,7 @@ const __TextEditorComp: React.FC<__TextEditorProps> = (props: __TextEditorProps)
                         defaultContentState={parseHtmlToContent(field.value)}
                         toolbarClassName={Styles.toolbar}
                         wrapperClassName={Styles.input(fieldState.invalid, focus)}
-                        onContentStateChange={(e) => onChangeHandler(e, field.onChange)}
+                        onContentStateChange={(e: any) => onChangeHandler(e, field.onChange)}
                         onBlur={() => {
                             setFocus(false);
                             field.onBlur();

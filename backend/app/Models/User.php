@@ -20,120 +20,18 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use LVR\Phone\Phone;
 
-/**
- * @OA\Schema(
- *     schema="User",
- *     title="Schema reference for User",
- *     @OA\Property(
- *         property="active",
- *         example="",
- *         type="boolean",
- *
- *     ),
- *     @OA\Property(
- *         property="username",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="full_name",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="email",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="address",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="city",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="postal_code",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="province_code",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="country_code",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="phone1",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="phone2",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="roles",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     ),
- *     @OA\Property(
- *         property="permissions",
- *         example="",
- *         description="",
- *         type="string",
- *
- *     )
- * )
- */
 class User extends Authenticatable implements Auditable, Authorizable, CanResetPassword, MustVerifyEmail
 {
     use Notifiable;
     use HasFactory;
     use HasApiTokens;
     use \OwenIt\Auditing\Auditable;
-    use HasRoles; // spatie laravel-permission
-    use HasPermissions; // spatie laravel-permission
+    use HasRoles;
+    use HasPermissions;
     use BaseModel;
 
-    // addition of timestamp fields created_at and updated_at
     public $timestamps = true;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'username',
         'full_name',
@@ -157,48 +55,21 @@ class User extends Authenticatable implements Auditable, Authorizable, CanResetP
         'active' => 'equals',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
     protected $attributes = [
         'active' => true,
         'country_code' => 'CA',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime:Y-m-d',
         'active' => 'boolean',
     ];
 
-    /**
-     * The relationships that should always be loaded.
-     *
-     * @var array
-     */
-    // protected $with = ['roles', 'permissions'];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
     protected $appends = ['all_permissions'];
 
     protected $attributeModifiers = [
@@ -284,12 +155,8 @@ class User extends Authenticatable implements Auditable, Authorizable, CanResetP
         $this->assignRole($this->getRoleNames());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transformAudit(array $data): array
     {
-        // in case need to transform audit
         return $data;
     }
 
@@ -340,7 +207,6 @@ class User extends Authenticatable implements Auditable, Authorizable, CanResetP
     public function forceAllow($roles_and_perms, array $gate_context = [])
     {
         if (!$this->isAllowed($roles_and_perms)) {
-            // throw UnauthorizedException::forRolesOrPermissions($roles_and_perms);
             throw new UnauthorizedException(403);
         }
 

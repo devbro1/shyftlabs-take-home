@@ -8,4 +8,5 @@ export interface __TextInputProps {
     type?: 'text' | 'number' | 'password';
     placeholder?: string;
     className?: string;
+    disabled?: boolean;
 }

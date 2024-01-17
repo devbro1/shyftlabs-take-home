@@ -37,7 +37,7 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->isAllowedAny(['Create Role']);
+        return $user->isAllowedAny(['create role']);
     }
 
     /**
@@ -47,7 +47,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role)
     {
-        return $user->isAllowedAny(['Update Role']);
+        return $user->isAllowedAny(['update role']);
     }
 
     /**
@@ -57,7 +57,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role)
     {
-        return $user->isAllowedAny(['Update Role']);
+        return $user->isAllowedAny(['update role']);
     }
 
     // /**

@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Auth\AuthenticationException;
-use Closure;
 
 class AuthenticateOptional extends Middleware
 {
@@ -23,7 +22,7 @@ class AuthenticateOptional extends Middleware
         // }
     }
 
-    public function handle($request, Closure $next, ...$guards)
+    public function handle($request, \Closure $next, ...$guards)
     {
         $authorization_cookie = 'Authorization_token';
 

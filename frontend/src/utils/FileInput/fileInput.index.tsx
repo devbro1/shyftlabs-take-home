@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { FileInputStyles as Styles } from './fileInput.styles';
 import { __FileInputProps } from './fileInput.types';
-import { RestAPI } from 'scripts';
+import { __RestAPI as RestAPI } from 'scripts/api';
 import { APIPath } from 'data';
+import { ButtonComp } from 'utils';
 
 // text input component compatible with controller logic
 const __TextInputComp: React.FC<__FileInputProps> = (props: __FileInputProps) => {
@@ -13,7 +14,7 @@ const __TextInputComp: React.FC<__FileInputProps> = (props: __FileInputProps) =>
             control={props.control}
             name={props.name}
             render={({ field, fieldState }) => {
-                if (field.value && !fieldValue) {
+                if (field.value && !fieldValue && isFinite(field.value)) {
                     RestAPI.get(APIPath.file.index(field.value) + '?info_only=true').then((resp: any) => {
                         setFieldValue(resp.data);
                         field.onChange(resp.data.id);
@@ -70,7 +71,7 @@ const __TextInputComp: React.FC<__FileInputProps> = (props: __FileInputProps) =>
                 } else {
                     actualField = (
                         <div>
-                            Uploaded file: {fieldValue.filename} <div onClick={deleteFile}>DELETE</div>
+                            Uploaded file: {fieldValue.filename} <ButtonComp onClick={deleteFile}>DELETE</ButtonComp>
                         </div>
                     );
                 }

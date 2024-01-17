@@ -1,0 +1,161 @@
+name: Run tests
+
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}-tests
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "frontend-testing"
+
+env:
+  PROJECT_NAME: refined
+  BASE_PATH: /var/www/apps/refined
+  CURRENT_PATH: /var/www/apps/refined/current
+  DEPLOY_BASE_PATH: /var/www/apps/refined/deployments
+
+
+jobs:
+  generate-docker-images:
+    runs-on: [self-hosted, test-runner]
+    steps:
+      - name: pre-cleanup
+        run: |
+          sudo rm -rf /home/runner1/actions-runner/_work/refined/refined/backend
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: build images
+        run: |
+          docker build --pull --rm -f "docker/testing.Dockerfile" -t tester1:latest .
+          docker tag tester1:latest localhost:5000/tester1:latest
+          docker push localhost:5000/tester1:latest
+
+  build-front-end:
+    runs-on: [self-hosted, test-runner]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Restore frontend cache
+      uses: actions/cache@v3
+      id: frontend-build-testing-cache
+      with:
+        path: |
+          ./frontend/build
+        key: frontend-testing-${{ hashFiles('./frontend/src/') }}
+    - name: build frontend
+      if: steps.frontend-build-testing-cache.outputs.cache-hit != 'true'
+      run: |
+        cat frontend/.env.testing > frontend/.env
+
+        docker build --pull --rm -f "docker/node_builder.Dockerfile" -t my-node-app:v1 .
+        docker create --name my-node-app-container my-node-app:v1
+        docker cp my-node-app-container:/root/source_code/refined/frontend/build ./frontend/
+        docker rm my-node-app-container
+
+  run-backend-tests:
+    runs-on: [self-hosted, test-runner]
+    needs: [generate-docker-images, build-front-end]
+    container:
+      image: localhost:5000/tester1:latest
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: refined_testing
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+      - name: prepare
+        run: |
+          cd backend
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=refined_testing/' .env.testing
+          cp .env.testing .env
+
+
+          sed -i 's/^user = .*$/user = 1000/' /etc/php-fpm.d/www.conf
+          sed -i 's/^group = .*$/group = 1000/' /etc/php-fpm.d/www.conf
+
+          mkdir -p storage/cache
+          mkdir -p storage/framework/cache/data
+          mkdir -p bootstrap/cache
+          chmod -R 777 bootstrap
+          chmod -R 777 storage
+
+          composer install
+          php artisan migrate:fresh
+          php artisan db:seed TestingDataSeeder
+          php artisan devbro:SADUpdatePerms
+      - name: run backend tests
+        run: |
+          pwd
+          cd backend
+          php artisan test
+      - name: load playwright browsers
+        uses: actions/cache@v3
+        id: playwright-browsers-testing-cache
+        with:
+          path: |
+            /github/home/.cache/ms-playwright
+          key: playwright-browsers-testing-cache
+      - name: load cached frontend build
+        uses: actions/cache@v3
+        id: frontend-build-testing-cache
+        with:
+          path: |
+            ./frontend/build
+          key: frontend-testing-${{ hashFiles('./frontend/src/') }}
+      - name: prepare for frontend tests
+        shell: bash
+        run: |  
+          export NVM_DIR="/root/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+          cat docker/nginx.conf > /etc/nginx/nginx.conf
+
+          pwd
+          escaped_string=$(pwd | sed 's/\//\\\//g')
+          sed -i "s/root .*refined/root $escaped_string/" /etc/nginx/nginx.conf
+
+          cd frontend
+          yarn
+          npx playwright install
+      - name: Save playwright browsers Cache
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            /github/home/.cache/ms-playwright
+          key: playwright-browsers-testing-cache
+      - name: run frontend test
+        shell: bash
+        run: |
+          export NVM_DIR="/root/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+          cd frontend
+          export PLAYWRIGHT_DB_CONNECTION="postgresql://postgres:postgres@db:5432/refined_testing"
+          npx playwright install
+          mkdir -p /run/php-fpm/
+          php-fpm
+          nginx
+          yarn ptest
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: frontend-artifacts
+          path: |
+            /var/log/nginx/
+            backend/storage/logs/
+            frontend/test-results/

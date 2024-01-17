@@ -1,6 +1,6 @@
 import { ContextProviderComp } from './context';
-import DevbroComp from 'devbro/devbro.index';
-import React, { Suspense } from 'react';
+import PagesComp from 'pages/pages.index';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -12,20 +12,23 @@ import 'react-toastify/dist/ReactToastify.css';
 const App: React.FC = () => {
     const queryClient = new QueryClient({
         defaultOptions: {
-            queries: { refetchOnWindowFocus: false, staleTime: 30 * 60 * 1000 },
-
+            queries: { refetchOnWindowFocus: false, staleTime: 30 * 60 * 1000, networkMode: 'always' },
             mutations: {
-                // mutation options
+                networkMode: 'always',
             },
         },
     });
+
+    useEffect(() => {
+        document.title = import.meta.env.VITE_APP_NAME || 'Meow Base App';
+    }, []);
 
     return (
         <ContextProviderComp>
             <QueryClientProvider client={queryClient}>
                 <ToastContainer
                     position="top-center"
-                    autoClose={parseInt(process.env.REACT_APP_NOTIFICATION_TIMEOUT as string)}
+                    autoClose={parseInt(import.meta.env.VITE_APP_NOTIFICATION_TIMEOUT as string)}
                     hideProgressBar={false}
                     newestOnTop={false}
                     closeOnClick
@@ -35,8 +38,8 @@ const App: React.FC = () => {
                     pauseOnHover
                 />
                 <BrowserRouter>
-                    <Suspense fallback="loading">
-                        <DevbroComp />
+                    <Suspense fallback="loading...">
+                        <PagesComp />
                     </Suspense>
                 </BrowserRouter>
             </QueryClientProvider>

@@ -209,6 +209,7 @@ export interface __TranslationType {
     language: string;
     key: string;
     translation: string;
+    namespace: string;
 }
 
 export interface AppointmentType {

@@ -16,7 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isAllowedAny(['view users']);
     }
 
     /**
@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $user, $id)
     {
-        return true;
+        return $user->isAllowedAny(['view users']);
     }
 
     /**
@@ -39,7 +39,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->isAllowedAny(['Add User']);
+        return $user->isAllowedAny(['add user']);
     }
 
     /**
@@ -49,7 +49,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->isAllowedAny(['Update User']);
+        return $user->isAllowedAny(['update user']);
     }
 
     /**

@@ -1,5 +1,5 @@
 export const __FooterStyles = {
-    root: 'footer bg-secondary bg-gray-50 dark:bg-gray-900 dark:text-gray-200 px-6 mx-auto container',
+    root: 'footer bg-secondary bg-white dark:bg-gray-800 dark:text-gray-200 px-6 mx-auto container ',
     firstRow: 'sm:flex sm:mt-16 content-center justify-between mt-16 mt-8',
     firstRowItem: 'flex flex-col mr-4',
     firstRowTitle: 'font-bold  uppercase mb-2',

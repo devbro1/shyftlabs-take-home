@@ -10,7 +10,7 @@ export const __Styles = {
     body: 'w-full whitespace-nowrap',
     footer: 'flex justify-between py-2 px-2',
     title: 'text-l font-bold text-gray-800',
-    row: 'even:bg-gray-200 odd:bg-gray-100',
+    row: 'bg-gray-200 odd:bg-gray-100 dark:bg-gray-900 dark:odd:bg-gray-700',
     fieldTitle: '',
     fieldValue: '',
 };

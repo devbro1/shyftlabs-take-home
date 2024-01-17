@@ -2,7 +2,8 @@
 #docker-compose -f "docker-compose.yml" up -d --build web
 version: "3.8"
 services:
-  web:
+  backend:
+    hostname: backend
     build:
       context: .
       dockerfile: docker/web.Dockerfile
@@ -14,12 +15,22 @@ services:
     - DB_DRIVER=pgsql
     ports:
     - "80:80"
+    volumes:
+    - ./:/host_machine/:rw
+    - source_code:/root/source_code:rw
+    depends_on:
+    - db
+
+  frontend:
+    hostname: frontend
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+    ports:
     - "3000:3000"
     volumes:
     - ./:/host_machine/:rw
-#    hostname: "mycontainer"
-    depends_on:
-    - db
+    - source_code:/root/source_code:rw
 
   db:
     image: postgres:13
@@ -30,8 +41,9 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
     volumes:
-#    - "mysql_data:/var/lib/mysql"
     - ./docker/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
+volumes:
+  source_code:
 #volumes:
 #  mysql_data: { driver: local }

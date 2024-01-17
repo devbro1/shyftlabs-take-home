@@ -16,11 +16,11 @@ class Announcements extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('body');
+            $table->text('body');
         });
 
-        $perm = Permission::create(['name' => 'Create Announcement', 'system' => 1]);
-        $perm = Permission::create(['name' => 'Update Announcement', 'system' => 1]);
+        $perm = Permission::create(['name' => 'create announcement', 'system' => 1]);
+        $perm = Permission::create(['name' => 'update announcement', 'system' => 1]);
     }
 
     /**
@@ -30,7 +30,7 @@ class Announcements extends Migration
     {
         Schema::dropIfExists('announcements');
 
-        Permission::where(['name' => 'Create Announcement'])->first()->delete();
-        Permission::where(['name' => 'Update Announcement'])->first()->delete();
+        Permission::where(['name' => 'create announcement'])->first()->delete();
+        Permission::where(['name' => 'update announcement'])->first()->delete();
     }
 }

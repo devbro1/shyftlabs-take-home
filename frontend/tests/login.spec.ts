@@ -23,7 +23,7 @@ test.describe('Login Page: ', () => {
   test('can login using correct username/password', async ({ page }) => {
     await login_page.fillForm({username: 'farzad', password: 'password'});
     await login_page.submitForm();
-    await page.waitForEvent('framenavigated');
+    await page.waitForEvent('framenavigated',{timeout:5000});
   });
 
 
@@ -54,7 +54,7 @@ test.describe('Login Page: ', () => {
   test('user can logout successfully', async ({ page }) => {
     await app_action.login('farzad','password');
     await app_action.logout();
-    await page.waitForURL('auth/signIn');
+    await page.waitForURL('auth/sign-in');
   });
 
   test('user can request reset password', async ({ page }) => {

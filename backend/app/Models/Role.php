@@ -6,28 +6,6 @@ use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role as SRole;
 use OwenIt\Auditing\Contracts\Auditable;
 
-/**
- * @OA\Schema(
- *     schema="Role",
- *     title="Schema reference for Role",
- *     @OA\Property(
- *         property="name",
- *         example="",
- *         type="string",
- *     ),
- *     @OA\Property(
- *         property="description",
- *         example="",
- *         type="string",
- *     ),
- *     @OA\Property(
- *         property="permissions",
- *         example={"perm1", "perm2", "perm3"},
- *         type="array",
- *         @OA\Items
- *     ),
- * )
- */
 class Role extends SRole implements Auditable
 {
     use \OwenIt\Auditing\Auditable;

@@ -1,18 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
 
-ReactDOM.render(
-    process.env.REACT_APP_STRICT_MODE !== 'false' ? (
+const container = document.getElementById('root');
+const root = createRoot(container!); // createRoot(container!) if you use TypeScript
+root.render(
+    import.meta.env.VITE_APP_STRICT_MODE !== 'false' ? (
         <React.StrictMode>
             <App />
         </React.StrictMode>
     ) : (
         <App />
     ),
-    document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

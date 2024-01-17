@@ -7,11 +7,14 @@ export interface __DataTableProps {
     page: number;
     pageSize: number;
     pageCount: number;
+    from: number;
+    to: number;
     total: number;
     isLoading?: boolean;
     paginationSizes: [];
     sort: string;
     sortDirection: string;
+    defautlFilters?: any;
 }
 
 export interface __DataTableRefType {
@@ -24,8 +27,9 @@ export interface __DataTableColumnType {
     sortable?: boolean;
     field: string;
     value: (row: any) => ReactNode | string;
-    stringContent: (obj: any) => string;
-    filter: boolean;
+    stringContent?: (obj: any) => string;
+    filter: boolean | Function;
+    className?: string;
 }
 
 export interface __DataTableSearchType {

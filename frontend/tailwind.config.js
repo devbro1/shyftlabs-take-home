@@ -29,11 +29,23 @@ module.exports = {
                     '100%': {
                         opacity: '0',
                     },
-                }
+                },
             },
             animation: {
-                fadeOut: "fadeOut 0.3s ease-in"
-            }
+                fadeOut: 'fadeOut 0.3s ease-in',
+            },
+            backgroundImage: {
+                're-icon-light': "url('/re_icon_light.png')",
+                're-icon-dark': "url('/re_icon_dark.png')",
+            },
+            colors: {
+                'deep-blue': '#043750',
+                'ocean-blue': '#38869B',
+                sand: '#ECEAE1',
+                'aqua-green': '#63C3A5',
+                'salmon-pink': 'F26F6F',
+                'dark-grey': '#292A2D',
+            },
         },
     },
     plugins: [],

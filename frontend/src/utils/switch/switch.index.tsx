@@ -19,12 +19,20 @@ const __SwitchComp: React.FC<__SwitchProps> = (props: __SwitchProps) => {
                                 <Switch.Label className={Styles.title(fieldState.invalid)}>{props.title}</Switch.Label>
                             ) : null}
                             {/* switch main body */}
+
                             <Switch
                                 checked={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
-                                name={field.name}
-                                className={Styles.body(Boolean(field.value))}
+                                name={props.name}
+                                className={
+                                    Styles.body(Boolean(field.value)) +
+                                    ' switch-field-name-' +
+                                    props.name +
+                                    ' switch-field-value-' +
+                                    field.value
+                                }
+                                value={field.value}
                             >
                                 <span className={Styles.toggle(Boolean(field.value))} />
                             </Switch>

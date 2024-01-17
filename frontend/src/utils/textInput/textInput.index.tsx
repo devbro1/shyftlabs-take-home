@@ -18,7 +18,9 @@ const __TextInputComp: React.FC<__TextInputProps> = (props: __TextInputProps) =>
                             placeholder={props.placeholder}
                             type={props.type ? props.type : 'text'}
                             {...field}
-                            className={Styles.input(fieldState.invalid)}
+                            value={field.value || ''}
+                            className={Styles.input(fieldState.invalid) + ' ' + (props.disabled ? Styles.disabled : '')}
+                            disabled={props.disabled || false}
                         />
                         {/* input error message */}
                         {fieldState.invalid && fieldState.error?.message ? (

@@ -10,7 +10,7 @@ import {
     HiOutlineChevronDoubleLeft,
     HiOutlineChevronDoubleRight,
 } from 'react-icons/hi';
-import { Popover, Transition, TransitionClasses } from '@headlessui/react';
+import { Popover, Transition } from '@headlessui/react';
 
 // text input component compatible with controller logic
 const DateTimePicker: React.FC<__DateTimePickerProps> = (props: __DateTimePickerProps) => {
@@ -41,8 +41,6 @@ const DateTimePicker: React.FC<__DateTimePickerProps> = (props: __DateTimePicker
 
                 if (is_visible) {
                     hover_class = 'visible ' + hover_class;
-                } else {
-                    hover_class = 'invisible ' + hover_class;
                 }
 
                 const d = value_moment.clone().startOf('month');
@@ -206,17 +204,18 @@ const DateTimePicker: React.FC<__DateTimePickerProps> = (props: __DateTimePicker
                 const input_props = {};
                 //delete input_props.type;
 
-                const animationProps: TransitionClasses = {
-                    enter: 'transition ease-out duration-200',
-                    enterFrom: 'opacity-0 translate-y-1',
-                    enterTo: 'opacity-100 translate-y-0',
-                    leave: 'transition ease-in duration-150',
-                    leaveFrom: 'opacity-100 translate-y-0',
-                    leaveTo: 'opacity-0 translate-y-1',
-                };
+                // const animationProps: TransitionClasses = {
+                //     enter: 'transition ease-out duration-200',
+                //     enterFrom: 'opacity-0 translate-y-1',
+                //     enterTo: 'opacity-100 translate-y-0',
+                //     leave: 'transition ease-in duration-150',
+                //     leaveFrom: 'opacity-100 translate-y-0',
+                //     leaveTo: 'opacity-0 translate-y-1',
+                // };
 
                 return (
-                    <Popover>
+                    <Popover className={props.className}>
+                        {props.title ? <span className={Styles.title(fieldState.invalid)}>{props.title}</span> : null}
                         <Popover.Button className="align-middle">
                             <div className="relative">
                                 <input
@@ -224,14 +223,15 @@ const DateTimePicker: React.FC<__DateTimePickerProps> = (props: __DateTimePicker
                                     {...input_props}
                                     onFocus={onFocus}
                                     className={Styles.input(fieldState.invalid)}
-                                    value={field.value}
+                                    value={field.value || ''}
+                                    name={props.name}
                                 />
                                 {props.fieldIcon}
                             </div>
                         </Popover.Button>
-                        <Transition {...animationProps}>
+                        <Transition>
                             <Popover.Panel className={Styles.notificationContent}>
-                                <div className={hover_class}>
+                                <div className={hover_class} style={{ zIndex: '9999' }}>
                                     <div className="flex flex-row">
                                         <div className="">
                                             <div className={Styles.header_calendar}>
@@ -294,7 +294,14 @@ const DateTimePicker: React.FC<__DateTimePickerProps> = (props: __DateTimePicker
                                             {props.showTime ? props.textNow : props.textToday}
                                         </div>
                                         <div className="flex-grow text-center"></div>
-                                        <div className="flex-none ">Clear</div>
+                                        <div
+                                            className="flex-none "
+                                            onClick={() => {
+                                                field.onChange('');
+                                            }}
+                                        >
+                                            Clear
+                                        </div>
                                     </div>
                                 </div>
                             </Popover.Panel>

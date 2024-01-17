@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Alert from './Alert';
 import { alertService } from './AlertService';
 import { history } from 'data/browserhistory';
@@ -22,7 +22,10 @@ function __AlertsComp(props: any) {
                 return rc;
             });
 
-            setTimeout(() => removeAlert(alert), parseInt(process.env.REACT_APP_NOTIFICATION_TIMEOUT as string));
+            setTimeout(
+                () => removeAlert(alert),
+                parseInt(alert?.timeout || (import.meta.env.VITE_APP_NOTIFICATION_TIMEOUT as string)),
+            );
             //     // // filter out alerts without 'keepAfterRouteChange' flag
             //     // const alerts = this.state.alerts.filter(x => x.keepAfterRouteChange);
             //     // // remove 'keepAfterRouteChange' flag on the rest
@@ -49,7 +52,7 @@ function __AlertsComp(props: any) {
     }
 
     return (
-        <>
+        <div className="fixed top-0 left-0 right-0 z-40 w-96">
             {alerts.map((val, index) => {
                 return (
                     <Alert
@@ -61,7 +64,7 @@ function __AlertsComp(props: any) {
                     />
                 );
             })}
-        </>
+        </div>
     );
 }
 

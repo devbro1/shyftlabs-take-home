@@ -18,7 +18,13 @@ abstract class TestCase extends BaseTestCase
             $response['status_code'] = $rc->getStatusCode();
             $response['content'] = $rc->getContent();
             $response['content-type'] = $rc->headers->get('Content-Type');
-            Storage::append(config('devbro.testRecordingFile'), json_encode(['method' => $method, 'uri' => $uri, 'parameters' => $parameters, 'response' => $response]));
+            $output = json_encode(['method' => $method, 'uri' => $uri, 'parameters' => $parameters, 'response' => $response]);
+            if ($output) {
+                $output .= ',';
+            } else {
+                $output = '';
+            }
+            Storage::append(config('devbro.testRecordingFile'), $output);
         }
 
         return $rc;

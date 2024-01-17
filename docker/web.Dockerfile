@@ -33,47 +33,21 @@ RUN amazon-linux-extras enable nginx1=latest
 RUN amazon-linux-extras enable vim=latest
 RUN amazon-linux-extras enable epel=latest
 RUN amazon-linux-extras enable postgresql13=latest
-RUN amazon-linux-extras enable php8.0=latest
+RUN amazon-linux-extras enable php8.2=latest
 RUN amazon-linux-extras install epel -y
 RUN yum clean all && yum update -y && yum autoremove -y && yum clean all
 # RUN yum clean all && yum autoremove -y && yum clean all
+RUN yum install -y yum-utils
+RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 RUN yum -y install php \
     nginx postgresql\
-    wget zip unzip make rsync git vim bash-completion tar
-RUN yum install -y php-cli php-fpm php-pgsql php-mbstring php-xml php-json php-pdo php-pecl-zip php-pear phpdevel gcc php-devel
+    wget zip unzip make rsync git vim bash-completion tar \
+    awscli amazon-linux-extras-yum-plugin oathtool jq terraform
+RUN yum install -y php-cli php-fpm php-pgsql php-mbstring php-xml php-json php-pdo php-pecl-zip php-pear phpdevel gcc php-devel php-gd
 
 # packages for playwright testing
 RUN yum install -y libatk libcups libX11 atk cups libxkbcommon libXcomposite pango alsa-lib at-spi2-core at-spi2-atk
 RUN pecl install Xdebug
-# RUN yum -y install php php-cli php-common php-fpm php-pgsql php-bcmath php-mysqlnd php-opcache php-gd php-pecl-apcu php-pecl-igbinary php-pecl-memcache php-pecl-memcached php-pecl-igbinary-devel php-soap php-sodium php-pecl-msgpack php-pecl-ssh2 php-intl \
-#     ghostscript \
-#     ImageMagick procps-ng.i686 openssl java-11-amazon-corretto.x86_64 \
-#     java-11-amazon-corretto-headless.x86_64 javapackages-tools.noarch python-javapackages.noarch xorg-x11-server-Xvfb \
-#     gtk2-devel gtk3-devel libnotify-devel GConf2 nss libXScrnSaver alsa-lib npm nginx-all-modules.noarch \
-#      Xvfb nss-3.53.1-17.el8_3.i686 atk at-spi2-atk gdk-pixbuf2-devel.x86_64 gtk3 libgbm alsa-lib \
-#     chromedriver.x86_64 chrome-remote-desktop.x86_64 atk-2.28.1-1.el8.i686 libnss3.so Xvfb
-# RUN dnf -y install dnf-utils epel-release
-# RUN dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-# RUN dnf -y module enable php:remi-8.0
-# RUN dnf -y module enable nginx:1.18
-# RUN dnf -y module enable nodejs:14
-# RUN yum clean all && yum update -y && yum autoremove -y && yum clean all
-# RUN dnf -y install php php-cli php-common php-fpm nginx wget \
-#     php-pgsql.x86_64 php-bcmath.x86_64 php-pecl-json-post.x86_64 php-pdo-dblib.x86_64 \
-#     php-pecl-xmldiff.x86_64 php-pecl-zip.x86_64 zip.x86_64 vim \
-#     php74-php-pgsql.x86_64 bash-completion npm nginx-all-modules.noarch git \
-#     nodejs Xvfb nss-3.53.1-17.el8_3.i686 atk at-spi2-atk gdk-pixbuf2-devel.x86_64 gtk3 libgbm alsa-lib \
-#     chromedriver.x86_64 chrome-remote-desktop.x86_64 atk-2.28.1-1.el8.i686 libnss3.so Xvfb
-
-# RUN yum install -y xorg-x11-server-Xvfb gtk2-devel gtk3-devel libnotify-devel GConf2 nss libXScrnSaver alsa-lib
-
-# RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-# RUN dnf -qy module disable postgresql
-# RUN dnf -y install postgresql13
-
-#RUN systemctl enable nginx
-#RUN systemctl start nginx #systemd is not active so run it manually eh
-#CMD ["/usr/sbin/nginx"]
 
 WORKDIR /root
 
@@ -85,20 +59,16 @@ RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | 
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
     && nvm use default \
-    && npm install -g yarn
-
-#postgresql
-#dnf -y module enable postgresql:12
+    && npm install -g yarn secure-spreadsheet
 
 #nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 #php
-# RUN mkdir /run/php-fpm/
-#RUN sed -i 's/\r$//' /root/start.sh
 RUN sed -i 's/^display_errors = Off$/display_errors = On/' /etc/php.ini
 RUN sed -i 's/^display_startup_errors = Off$/display_startup_errors = On/' /etc/php.ini
-RUN sed -i 's/^upload_max_filesize = .*$/upload_max_filesize = 20M/' /etc/php.ini
+RUN sed -i 's/^upload_max_filesize = .*$/upload_max_filesize = 50M/' /etc/php.ini
+RUN sed -i 's/^post_max_size = .*$/post_max_size = 50M/' /etc/php.ini
 RUN sed -i 's/^memory_limit = .*$/memory_limit = 3000M/' /etc/php.ini
 COPY ./docker/php.d/20-xdebug.ini /etc/php.d/20-xdebug.ini
 

@@ -9,6 +9,7 @@ export interface __SelectProps {
     placeholder?: string;
     unSelectable?: boolean;
     className?: string;
+    inputClassName?: string;
     options?: __SelectOptionType[];
     disabled?: boolean;
 }

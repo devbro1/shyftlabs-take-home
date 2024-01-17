@@ -1,3 +1,0 @@
-### ServiceListComp
-
-services list page

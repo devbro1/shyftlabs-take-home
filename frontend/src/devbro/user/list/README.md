@@ -1,3 +1,0 @@
-### UserListComp
-
-user list page

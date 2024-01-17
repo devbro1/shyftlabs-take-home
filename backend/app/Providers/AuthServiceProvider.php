@@ -5,10 +5,10 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Passport;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -31,8 +31,6 @@ class AuthServiceProvider extends ServiceProvider
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage())->markdown('mail.user.new_user', ['verify_email_url' => $url]);
         });
-
-        Passport::routes();
 
         Gate::before(function ($user, $ability) {
             if (!Permission::where('name', $ability)->exists()) {
@@ -67,5 +65,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('impersonate', function (User $user, User $u) {
             return $user->isAllowed('impersonate');
         });
+
+        Passport::tokensExpireIn(now()->addHours(8));
+        Passport::refreshTokensExpireIn(now()->addHours(8));
+        Passport::personalAccessTokensExpireIn(now()->addHours(8));
     }
 }

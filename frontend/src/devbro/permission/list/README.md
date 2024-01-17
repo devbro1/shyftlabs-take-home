@@ -1,3 +1,0 @@
-### PermissionListComp
-
-permission list page

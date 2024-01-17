@@ -1,13 +1,17 @@
 import _ from 'lodash';
-import { RestAPI } from 'scripts';
+import { __RestAPI as RestAPI } from 'scripts/api';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 function tablePropsProvider(url: string, params: any = {}) {
+    const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
     const [dataTotal, setDataTotal] = useState(0);
+    const [dataFrom, setDataFrom] = useState(0);
+    const [dataTo, setDataTo] = useState(0);
     const [orderByField, setOrderByField] = useState('');
     const [orderByDirection, setOrderByDirection] = useState('');
     const [filters, setFilters] = useState({});
@@ -35,9 +39,18 @@ function tablePropsProvider(url: string, params: any = {}) {
         }
     });
 
-    const { data, isLoading } = useQuery({
+    useEffect(() => {
+        queryClient.invalidateQueries({
+            queryKey: [params.queryKey],
+            exact: false,
+            type: 'all',
+            refetchType: 'active',
+        });
+    }, []);
+
+    const useQueryOptionsBase = {
         queryKey: [params.queryKey, searchParams.toString()],
-        queryFn: (queryKey) => {
+        queryFn: (queryKey: any) => {
             return RestAPI.get(url + '?' + queryKey.queryKey[1])
                 .then((response: any) => {
                     return response.data;
@@ -47,13 +60,17 @@ function tablePropsProvider(url: string, params: any = {}) {
                 });
         },
         staleTime: 60 * 1000, // 1 minute
-    });
+    };
+    const useQueryOptions = { ...(params.useQueryOptions || {}), ...useQueryOptionsBase };
+    const { data, isLoading } = params.useQuery || useQuery(useQueryOptions);
 
     useEffect(() => {
         if (data) {
             setPageCount(data.last_page);
             setPageSize(data.per_page);
             setDataTotal(data.total);
+            setDataFrom(data.from);
+            setDataTo(data.to);
         }
     }, [data]);
 
@@ -82,6 +99,8 @@ function tablePropsProvider(url: string, params: any = {}) {
         pageSize: pageSize,
         page: page,
         pageCount: pageCount,
+        from: dataFrom,
+        to: dataTo,
         total: dataTotal,
         sort: orderByField,
         sortDirection: orderByDirection,

@@ -14,6 +14,7 @@ composer fix-style
 cd ..
 cd frontend
 yarn format
+yarn tsc || exit 1
 cd ..
 git add --all
 

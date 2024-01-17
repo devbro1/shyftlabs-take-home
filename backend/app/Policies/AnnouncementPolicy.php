@@ -37,7 +37,7 @@ class AnnouncementPolicy
      */
     public function create(User $user)
     {
-        return $user->isAllowedAny(['Create Announcement', 'Manage Announcement']);
+        return $user->isAllowedAny(['create announcement', 'manage announcement']);
     }
 
     /**
@@ -47,7 +47,7 @@ class AnnouncementPolicy
      */
     public function update(User $user, Announcement $announcement)
     {
-        return $user->isAllowedAny(['Update Announcement', 'Manage Announcement']);
+        return $user->isAllowedAny(['update announcement', 'manage announcement']);
     }
 
     /**
@@ -57,6 +57,6 @@ class AnnouncementPolicy
      */
     public function delete(User $user, Announcement $announcement)
     {
-        return $user->isAllowedAny(['Update Announcement', 'Manage Announcement']);
+        return $user->isAllowedAny(['update announcement', 'manage announcement']);
     }
 }

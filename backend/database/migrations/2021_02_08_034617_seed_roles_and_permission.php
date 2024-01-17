@@ -15,17 +15,17 @@ class SeedRolesAndPermission extends Migration
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'Configuration', 'system' => 1]);
-        Permission::create(['name' => 'Debug', 'system' => 1]);
-        Permission::create(['name' => 'Update Templates', 'system' => 1]);
-        Permission::create(['name' => 'Add User', 'system' => 1]);
-        Permission::create(['name' => 'Update User', 'system' => 1]);
-        Permission::create(['name' => 'View Users', 'system' => 1]);
-        Permission::create(['name' => 'Manage Roles', 'system' => 1]);
-        Permission::create(['name' => 'Create Permission', 'system' => 1]);
-        Permission::create(['name' => 'Update Permission', 'system' => 1]);
-        Permission::create(['name' => 'Create Role', 'system' => 1]);
-        Permission::create(['name' => 'Update Role', 'system' => 1]);
+        Permission::create(['name' => 'configuration', 'system' => 1]);
+        Permission::create(['name' => 'debug', 'system' => 1]);
+        Permission::create(['name' => 'update templates', 'system' => 1]);
+        Permission::create(['name' => 'add user', 'system' => 1]);
+        Permission::create(['name' => 'update user', 'system' => 1]);
+        Permission::create(['name' => 'view users', 'system' => 1]);
+        Permission::create(['name' => 'manage roles', 'system' => 1]);
+        Permission::create(['name' => 'create permission', 'system' => 1]);
+        Permission::create(['name' => 'update permission', 'system' => 1]);
+        Permission::create(['name' => 'create role', 'system' => 1]);
+        Permission::create(['name' => 'update role', 'system' => 1]);
 
         // this can be done as separate statements
         $role = Role::create(['name' => 'super-admin', 'description' => 'Super Administrator']);

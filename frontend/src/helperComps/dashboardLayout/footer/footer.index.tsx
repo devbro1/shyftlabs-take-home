@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { __FooterStyles as Styles } from './footer.styles';
 
 // footer component of dashboard base layout.
 const FooterComp: React.FC = () => {
     return (
         <footer className={Styles.root}>
-            <div className={Styles.firstRow}>
+            {/* <div className={Styles.firstRow}>
                 <div className={Styles.firstRowItem}>
-                    <span className={Styles.firstRowTitle}>Devbro Software</span>
+                    <span className={Styles.firstRowTitle}>MEOW Software</span>
                     <a title="Tailwind CSS Dropdowns" href="/" className={Styles.firstRowDesc}>
                         Laravel + React + Tailwind
                     </a>
@@ -25,11 +24,11 @@ const FooterComp: React.FC = () => {
                         Cheatsheet
                     </a>
                 </div>
-            </div>
+            </div> */}
             <div className={Styles.lastRow}>
                 <div className={Styles.lastRowContainer}>
-                    © {new Date().getFullYear()} Devbro<span className={Styles.lastRowItem}>-</span>
-                    <Link title="" to="/">
+                    © {new Date().getFullYear()} Reformulary Group<span className={Styles.lastRowItem}>-</span>
+                    {/* <Link title="" to="/">
                         Privacy
                     </Link>
                     <span className={Styles.lastRowItem}>-</span>
@@ -40,8 +39,10 @@ const FooterComp: React.FC = () => {
                     <Link title="" to="/">
                         Cookies
                     </Link>
-                    <span className={Styles.lastRowItem}>-</span>
-                    Author: <a href="mailto:farzadk@gmail.com">Farzad Khalafi</a>
+                    <span className={Styles.lastRowItem}>-</span> */}{' '}
+                    <a href="https://reformulary.com/" target="_blank" rel="noreferrer">
+                        Website
+                    </a>
                 </div>
             </div>
         </footer>

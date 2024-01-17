@@ -209,6 +209,8 @@ function getErrorMessage(field_title: string, rule: string, rule_params: any) {
         rc = '' + field_title + ' is not a valid phone number';
     } else if (rule === 'RequiredWith') {
         rc = '' + field_title + ' is required with fields ' + rule_params[0];
+    } else if (rule === 'Digits') {
+        rc = '' + field_title + ' must be ' + rule_params[0] + ' digits long';
     }
 
     return rc;

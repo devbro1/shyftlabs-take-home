@@ -11,28 +11,25 @@ use Spatie\QueryBuilder\AllowedFilter;
 class TranslationController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @group Translations
      */
     public function index(Request $request)
     {
         return QueryBuilder::for(Translation::class)
             ->allowedFilters([
                 AllowedFilter::exact('id'),
-                AllowedFilter::partial('original'),
-                AllowedFilter::partial('translated'),
+                AllowedFilter::partial('key'),
+                AllowedFilter::partial('translation'),
                 AllowedFilter::partial('language'),
+                AllowedFilter::partial('namespace'),
             ])
-            ->allowedSorts(['id', 'original', 'translated', 'language'])
+            ->allowedSorts(['id', 'key', 'original', 'translation', 'language', 'namespace'])
             ->jsonPaginate()
         ;
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @group Translations
      */
     public function store(Request $request)
     {
@@ -46,9 +43,7 @@ class TranslationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @group Translations
      */
     public function show(Translation $translation)
     {
@@ -56,9 +51,7 @@ class TranslationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @group Translations
      */
     public function update(Request $request, Translation $translation)
     {
@@ -72,9 +65,7 @@ class TranslationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @group Translations
      */
     public function destroy(Translation $translation)
     {
@@ -84,28 +75,7 @@ class TranslationController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/v1/cached-translations/{lang}",
-     *     summary="get list of all users",
-     *     tags={"Translation"},
-     *     @OA\Parameter(
-     *         description="Langunage",
-     *         in="path",
-     *         name="lang",
-     *         required=true, @OA\Schema(
-     *             type="string"
-     *         ),
-     *         @OA\Examples(
-     *             example="string",
-     *             value="en",
-     *             summary="English language."
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
+     * @group Translations
      */
     public function getCachedTranslation(Request $request, string $lang, string $namespace = 'translation')
     {
@@ -114,7 +84,7 @@ class TranslationController extends Controller
             return response('translation not found', 404);
         }
 
-        $lang = substr($lang, 0, 2);
+        // $lang = substr($lang, 0, 2);
         $translation_file = "public/translation/{$namespace}-{$lang}.json";
 
         if (!Storage::exists($translation_file)) {
@@ -132,6 +102,9 @@ class TranslationController extends Controller
         return ['' => ''];
     }
 
+    /**
+     * @group Translations
+     */
     public function getNamespaces()
     {
         $rc = [];
@@ -142,7 +115,30 @@ class TranslationController extends Controller
         $rc['datatable'] = 'Data Table';
         $rc['announcementpages'] = 'Announcement Pages';
         $rc['translation'] = 'Generic';
+        $rc['drug'] = 'Drug';
 
         return $rc;
+    }
+
+    public function reportMissingTranslation(Request $request, string $lang, string $namespace = 'translation')
+    {
+        $key = array_keys($request->all())[0];
+
+        $translation = Translation::where('key', $key)->where('namespace', $namespace)->where('language', $lang)->first();
+        if ($translation) {
+            return '';
+        }
+
+        $translation = Translation::where('key', $key)->where('namespace', $namespace)->where('language', 'en')->first();
+        if ($translation) {
+            return '';
+        }
+
+        $translation = new Translation();
+        $translation->language = 'en';
+        $translation->namespace = $namespace;
+        $translation->key = array_keys($request->all())[0];
+        $translation->translation = $translation->key;
+        $translation->save();
     }
 }

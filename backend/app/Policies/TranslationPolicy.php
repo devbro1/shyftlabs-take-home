@@ -89,4 +89,9 @@ class TranslationPolicy
     {
         return true;
     }
+
+    public function reportMissingTranslation(User $user = null, $lang, $namespace)
+    {
+        return true;
+    }
 }

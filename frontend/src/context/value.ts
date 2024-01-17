@@ -6,7 +6,7 @@ export const globalContextInitialValue: AppContextType = {
         return 'this one is going to change in container.tsx' + e.length;
     },
     darkMode: false,
-    showSideBar: true,
+    showSideBar: false,
     user: null, // authorized user data
     authStatus: AuthStatusEnum.pending, // status authorization status
     accessToken: '',

@@ -8,3 +8,7 @@ test('phpinfo api exists', function () {
     $response = $this->actingAs($user)->get('/api/v1/phpinfo')->assertStatus(200);
     $response->assertStatus(200);
 });
+
+test('ping pong', function () {
+    $this->get('/api/v1/ping')->assertStatus(200);
+});

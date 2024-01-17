@@ -1,4 +1,3 @@
-import React from 'react';
 import { __InfoTableProps } from './InfoTable.types';
 import { __Styles as Styles } from './InfoTable.styles';
 
