@@ -18,6 +18,7 @@ const UserComp = React.lazy(() => import('./user/user.index'));
 const TranslationComp = React.lazy(() => import('./translation/translation.index'));
 const StudentComp = React.lazy(() => import('./student/student.index'));
 const CourseComp = React.lazy(() => import('./course/course.index'));
+const ResultComp = React.lazy(() => import('./result/result.index'));
 
 // higher level router & authorization permission controller
 function PagesComp() {
@@ -67,6 +68,7 @@ function PagesComp() {
                     <Route path={RoutePath.translation.__index + '/*'} element={<TranslationComp />} />
                     <Route path={RoutePath.student.__index + '/*'} element={<StudentComp />} />
                     <Route path={RoutePath.course.__index + '/*'} element={<CourseComp />} />
+                    <Route path={RoutePath.result.__index + '/*'} element={<ResultComp />} />
                     <Route path="*" element={<Navigate to={RoutePath.announcement.__index} replace />} />
                 </Routes>
             </Suspense>

@@ -46,6 +46,13 @@ export const __SideNavOptions = [
                 title: 'Add New Courses',
                 permissions: ['create courses'],
             },
+
+            { url: RoutePath.result.__index, title: 'Results List', icon: FaBeer },
+            {
+                url: RoutePath.result.new(),
+                title: 'Add New Results',
+                permissions: ['create results'],
+            },
         ],
     },
     {

@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('course_id')->references('id')->on('courses');
-            $table->foreignId('student_id')->references('id')->on('students');
+            $table->foreignId('course_id')->references('id')->on('courses')->onDelete('cascade');;
+            $table->foreignId('student_id')->references('id')->on('students')->onDelete('cascade');;
             $table->string("score");
         });
 

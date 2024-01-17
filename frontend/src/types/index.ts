@@ -61,3 +61,12 @@ export interface CourseType {
     id: number;
     name: string;
 }
+
+export interface ResultType {
+    id: number;
+    score: string;
+    course_id: number;
+    student_id: number;
+    course: CourseType;
+    student: StudentType;
+}
