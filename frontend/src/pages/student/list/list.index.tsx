@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { APIPath, RoutePath } from 'data';
+import { __RestAPI as RestAPI } from 'scripts/api';
 import { Link } from 'react-router-dom';
 import { __AnnouncementListStyle as Styles } from './list.styles';
 import { StudentType } from 'types';
@@ -8,10 +9,26 @@ import { Popover } from '@headlessui/react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-
+import { IoClose } from "react-icons/io5";
+import { useQueryClient } from '@tanstack/react-query';
 
 const StudentListComp: React.FC = () => {
     const [dateRange, setDateRange] = useState('2020-1-1');
+    const queryClient = useQueryClient();
+
+    function deleteStudent(student: StudentType) {
+        if(confirm("Are you sure you want to delete "+ student.first_name + " " + student.family_name+" ?"))
+        {
+            RestAPI.delete(APIPath.student.index(student.id)).then(() => {
+                queryClient.invalidateQueries({
+                    queryKey: [APIPath.student.index()],
+                    exact: false,
+                    type: 'all',
+                    refetchType: 'active',
+                });
+            });
+        }
+    }
 
     const column = [
         {
@@ -92,6 +109,14 @@ const StudentListComp: React.FC = () => {
                     </Popover>
                 );
             },
+        },
+        {
+            title: 'Delete',
+            sortable: false,
+            field: 'email',
+            value: (row: StudentType) => { return (<IoClose color="red" onClick={() => {deleteStudent(row);}} />)},
+            className: 'w-12',
+            filter: false,
         },
     ];
 
