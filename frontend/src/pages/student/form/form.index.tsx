@@ -3,7 +3,7 @@ import React from 'react';
 import { __RestAPI as RestAPI } from 'scripts/api';
 import { __AnnouncementFormStyle as Styles } from './form.styles';
 import { StudentType } from 'types';
-import { FormComp, TextInputComp } from 'utils';
+import { DateTimePickerComp, FormComp, TextInputComp } from 'utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -46,7 +46,7 @@ const StudentFormComp: React.FC = () => {
         }
     });
 
-    const { handleSubmit, control, reset, getValues, setError, watch } = useForm<FieldValues>({
+    const { handleSubmit, control, reset, getValues, setError } = useForm<FieldValues>({
         resolver: yupResolver(validationSchema),
         defaultValues: data,
     });
@@ -74,7 +74,8 @@ const StudentFormComp: React.FC = () => {
                     alertService.success('Student was updated successfully');
                 } else {
                     alertService.success('Student was created successfully');
-                    navigate(RoutePath.student.edit(data.data.data.id));
+                    reset();
+                    //navigate(RoutePath.student.edit(data.data.data.id));
                 }
 
                 queryClient.setQueryData<StudentType>(['studentData', { id: id }], data.data.data);
@@ -125,12 +126,14 @@ const StudentFormComp: React.FC = () => {
                     type="text"
                     title="Email"
                 />
-                <TextInputComp
+                <DateTimePickerComp
+                    showTime={false}
                     className={Styles.fields()}
                     name="date_of_birth"
                     control={control}
                     type="text"
                     title="Date Of Birth"
+                    outputFormat='YYYY-MM-DD'
                 />
             </div>
         </FormComp>
