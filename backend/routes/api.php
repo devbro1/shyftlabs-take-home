@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationLogController;
@@ -58,6 +59,7 @@ Route::prefix('v1')->group(function () {
 
             Route::resource('students', StudentController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
             Route::resource('courses', CourseController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+            Route::resource('results', ResultController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
         });
     });
 
