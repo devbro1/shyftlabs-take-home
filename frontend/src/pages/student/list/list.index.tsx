@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { APIPath, RoutePath } from 'data';
 import { Link } from 'react-router-dom';
 import { __AnnouncementListStyle as Styles } from './list.styles';
 import { StudentType } from 'types';
 import { DataTableComp, tablePropsProvider } from 'helperComps';
+import { Popover } from '@headlessui/react';
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+
 
 const StudentListComp: React.FC = () => {
-    // data table component column prop
+    const [dateRange, setDateRange] = useState('2020-1-1');
+
     const column = [
         {
             title: 'Student ID',
@@ -52,7 +58,40 @@ const StudentListComp: React.FC = () => {
             field: 'date_of_birth',
             value: (row: StudentType) => row.date_of_birth,
 
-            filter: true,
+            filter: (opts: any) => {
+                const dates = dateRange.split(',');
+                const selectionRange = {
+                    startDate: new Date(dates[0]),
+                    endDate: new Date(dates[1]),
+                    key: 'selection',
+                };
+
+                function dateChange(value: any) {
+                    const start = value.selection.startDate.toISOString().substring(0, 10);
+                    const end = value.selection.endDate.toISOString().substring(0, 10);
+                    setDateRange(start + ',' + end);
+                    opts.setValue('date_of_birth', start + ',' + end);
+                }
+                return (
+                    <Popover>
+                        <Popover.Button className="align-left">
+                            <input
+                                type="text"
+                                className={opts.Styles.headerSearch}
+                                value={opts.getValues('date_of_birth')}
+                            />
+                        </Popover.Button>
+                        <Popover.Panel>
+                            <div
+                                className={'absolute border border-indigo-600 z-20 bg-white top-0 right-0'}
+                                style={{ zIndex: '9999' }}
+                            >
+                                <DateRangePicker ranges={[selectionRange]} onChange={dateChange} />
+                            </div>
+                        </Popover.Panel>
+                    </Popover>
+                );
+            },
         },
     ];
 

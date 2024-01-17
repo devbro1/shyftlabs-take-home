@@ -54,8 +54,8 @@ const StudentFormComp: React.FC = () => {
     const mutator = useMutation(
         (data: any) => {
             let apiCall;
-            if (id) apiCall = RestAPI.put(APIPath.user.index(id), data);
-            else apiCall = RestAPI.post(APIPath.user.index(), data);
+            if (id) apiCall = RestAPI.put(APIPath.student.index(id), data);
+            else apiCall = RestAPI.post(APIPath.student.index(), data);
 
             return apiCall;
         },

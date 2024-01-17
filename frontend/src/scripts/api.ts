@@ -201,6 +201,8 @@ function getErrorMessage(field_title: string, rule: string, rule_params: any) {
         rc = '' + field_title + ' already exists.';
     } else if (rule === 'Min') {
         rc = '' + field_title + ' must be at least ' + rule_params[0] + ' characters long';
+    } else if (rule === 'Max') {
+        rc = '' + field_title + ' must be less than ' + rule_params[0] + ' characters long';
     } else if (rule === 'matchesField') {
         rc = '' + field_title + ' does not match ' + rule_params.title;
     } else if (rule === 'Exists') {

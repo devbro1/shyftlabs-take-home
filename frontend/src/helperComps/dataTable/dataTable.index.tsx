@@ -10,7 +10,7 @@ import _ from 'lodash';
 function __DataTableComp(props: __DataTableProps) {
     const [sortField, setSortField] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<string>('');
-    const { control, register, watch, setValue } = useForm({});
+    const { control, register, watch, setValue, getValues } = useForm({});
 
     React.useEffect(() => {
         const subscription = watch((value, {}) => onFilterChange(value));
@@ -120,7 +120,7 @@ function __DataTableComp(props: __DataTableProps) {
                                 } else if (col.filter) {
                                     filter = (
                                         <div className="filter-container">
-                                            {col.filter({ control, register, Styles })}
+                                            {col.filter({ control, register, Styles, setValue, getValues })}
                                         </div>
                                     );
                                 }

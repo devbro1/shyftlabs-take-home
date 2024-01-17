@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class StudentController extends Controller
 {
@@ -20,7 +21,13 @@ class StudentController extends Controller
                 AllowedFilter::partial('first_name'),
                 AllowedFilter::partial('family_name'),
                 AllowedFilter::partial('email'),
-                AllowedFilter::partial('date_of_birth'),
+                AllowedFilter::callback('date_of_birth', function (Builder $query, $value) {
+                    if (is_array($value)) {
+                        $query->whereBetween('date_of_birth', $value);
+                    } elseif ($value) {
+                        $query->where('date_of_birth', $value);
+                    }
+                }),
             ])
             ->allowedSorts(['id', 'first_name','family_name', 'email','date_of_birth'])
             ->jsonPaginate()
@@ -53,9 +60,9 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $validated_data = Student::validate($request, $student);
-        $rc->update($validated_data);
+        $student->update($validated_data);
 
-        return ['message' => 'Student was updated successfully', 'data' => $rc];
+        return ['message' => 'Student was updated successfully', 'data' => $student];
     }
 
     /**
