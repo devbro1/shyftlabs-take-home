@@ -48,3 +48,11 @@ export type SelectOption = {
     value: string;
     title: string;
 };
+
+export interface StudentType {
+    id: number;
+    first_name: string;
+    family_name: string;
+    email: string;
+    date_of_birth: string;
+}

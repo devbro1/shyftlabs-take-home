@@ -46,28 +46,7 @@ export const __APIPath = {
         index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}files/${id ? id : ''}`,
         post: () => `${import.meta.env.VITE_APP_API}files/`,
     },
-    drug: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}drugs/${id ? id : ''}`,
-    },
-    noc: {
-        index: `${import.meta.env.VITE_APP_API}noc`,
-    },
-    dpd: {
-        index: `${import.meta.env.VITE_APP_API}dpd`,
-    },
-    database: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}database/${id ? id : ''}`,
-    },
-    changeRequest: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}change-requests/${id ? id : ''}`,
-    },
-    Processor: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}processors/${id ? id : ''}`,
-    },
-    export: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}exports/${id ? id : ''}`,
-    },
-    disorder: {
-        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}disorders/${id ? id : ''}`,
+    student: {
+        index: (id?: APIParam) => `${import.meta.env.VITE_APP_API}students/${id ? id : ''}`,
     },
 };

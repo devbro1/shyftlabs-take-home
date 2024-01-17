@@ -32,6 +32,20 @@ export const __SideNavOptions = [
         // },
     },
     {
+        url: RoutePath.student.__index,
+        title: 'Students and Courses',
+        icon: FaNewspaper,
+        patterns: ['/students/*'],
+        children: [
+            { url: RoutePath.student.__index, title: 'Students List', icon: FaBeer },
+            {
+                url: RoutePath.student.new(),
+                title: 'Add New Students',
+                permissions: ['create students'],
+            },
+        ],
+    },
+    {
         url: RoutePath.user.__index,
         title: 'User Management',
         icon: FaUser,

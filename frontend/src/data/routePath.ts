@@ -36,32 +36,9 @@ export const __RoutePath = {
         new: () => `${__RoutePath.translation.__index}/new`,
         edit: (id: routeParam) => `${__RoutePath.translation.__index}/${id}`,
     },
-    drug: {
-        __index: `/drugs`,
-        import: `/drugs/import`,
-        new: () => `/drugs/new`,
-        edit: (day: any) => `/drugs/${day}`,
-        audits: (day: any) => `/drugs/${day}/audits`,
-        processor: () => `${__RoutePath.drug.__index}/processors/`,
-    },
-    healthCanada: {
-        __index: `/health-canada`,
-        noc: `/health-canada/noc`,
-        dpd: `/health-canada/dpd`,
-    },
-    changeRequest: {
-        __index: `/change-requests`,
-        edit: (id: routeParam) => `${__RoutePath.changeRequest.__index}/${id}`,
-        processor: () => `${__RoutePath.changeRequest.__index}/processors/`,
-    },
-    export: {
-        __index: `/exports`,
-        new: () => `${__RoutePath.export.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.export.__index}/${id}`,
-    },
-    disorder: {
-        __index: `/disorders`,
-        new: () => `${__RoutePath.disorder.__index}/new`,
-        edit: (id: routeParam) => `${__RoutePath.disorder.__index}/${id}`,
+    student: {
+        __index: `/students`,
+        new: () => `/students/new`,
+        edit: (day: any) => `/students/${day}`,
     },
 };
