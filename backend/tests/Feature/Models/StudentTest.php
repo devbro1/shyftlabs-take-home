@@ -11,7 +11,6 @@ test('get student list', function () {
 });
 
 test('full student flow create,update,delete', function () {
-
     $user = User::role('super-admin')->first();
     $this->actingAs($user);
 
@@ -47,4 +46,72 @@ test('full student flow create,update,delete', function () {
     $response = $this->get('/api/v1/students/' . $student_id);
     $response->assertStatus(404);
 
+});
+
+
+test('student field validation', function () {
+    $user = User::role('super-admin')->first();
+    $this->actingAs($user);
+
+    $response = $this->post('/api/v1/students',[
+        'family_name' => fake()->lastName(),
+        'email' => fake()->email(),
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'email' => fake()->email(),
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'family_name' => fake()->lastName(),
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'family_name' => fake()->lastName(),
+        'email' => fake()->email(),
+    ]);
+    $response->assertStatus(422);
+
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => 'A',
+        'family_name' => fake()->lastName(),
+        'email' => fake()->email(),
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'family_name' => 'A',
+        'email' => fake()->email(),
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'family_name' => fake()->lastName(),
+        'email' => "QWEQWE",
+        'date_of_birth' => '2010-1-2',
+    ]);
+    $response->assertStatus(422);
+
+    $response = $this->post('/api/v1/students',[
+        'first_name' => fake()->firstName(),
+        'family_name' => fake()->lastName(),
+        'email' => fake()->email(),
+        'date_of_birth' => '2024-1-1',
+    ]);
+    $response->assertStatus(422);
 });
