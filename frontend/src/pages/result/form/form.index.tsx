@@ -1,4 +1,4 @@
-import { APIPath, RoutePath } from 'data';
+import { APIPath } from 'data';
 import React from 'react';
 import { __RestAPI as RestAPI } from 'scripts/api';
 import { __AnnouncementFormStyle as Styles } from './form.styles';
@@ -10,7 +10,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 import { alertService } from 'helperComps/Alert/AlertService';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { StudentsApi } from 'api/StudentsApi';
 import { CoursesApi } from 'api/CoursesApi';
@@ -19,8 +19,8 @@ import { CoursesApi } from 'api/CoursesApi';
 const ResultFormComp: React.FC = () => {
     const id: number = parseInt(useParams<any>().id || '0');
 
-    const { data: studentsOptions } = StudentsApi.options();
-    const { data: coursesOptions } = CoursesApi.options();
+    const { data: studentsOptions, isLoading: isLoadingStudents } = StudentsApi.options();
+    const { data: coursesOptions, isLoading: isLoadingCourses } = CoursesApi.options();
 
     const score_options : SelectOption[] = [];
     score_options.push({"value":"","title":" --- "});
@@ -39,25 +39,6 @@ const ResultFormComp: React.FC = () => {
     });
 
     const queryClient = useQueryClient();
-
-    const { data, isLoading } = useQuery<ResultType, Error>(['resultData', { id: id }], (params: any) => {
-        const [, { id }] = params.queryKey;
-
-        if (id) {
-            return RestAPI.get<ResultType>(APIPath.result.index(id))
-                .then((response2) => {
-                    const response: ResultType = response2.data;
-
-                    reset(response);
-                    return response;
-                })
-                .catch((ex) => {
-                    throw ex;
-                });
-        } else {
-            return {} as ResultType;
-        }
-    });
 
     const { handleSubmit, control, reset, getValues, setError } = useForm<FieldValues>({
         resolver: yupResolver(validationSchema),
@@ -98,7 +79,7 @@ const ResultFormComp: React.FC = () => {
         },
     );
 
-    if (id && isLoading) {
+    if (isLoadingCourses || isLoadingStudents) {
         return (
             <div className={Styles.loading}>
                 <FaSpinner size={48} className={Styles.loadingIcon} />
