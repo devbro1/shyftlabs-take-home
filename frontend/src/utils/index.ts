@@ -8,6 +8,7 @@ import __ButtonComp from './button/button.index';
 import __SwitchComp from './switch/switch.index';
 import __SelectComp from './select/select.index';
 import __MultiSelect from './multiSelect/multiSelect.index';
+import __SingleSelect from './singleSelect/singleSelect.index';
 import DateTimePicker from './DateTimePicker/DateTimePicker.index';
 
 export { __TextInputComp as TextInputComp };
@@ -20,4 +21,5 @@ export { __SwitchComp as SwitchComp };
 export { __SelectComp as SelectComp };
 export { __ButtonComp as ButtonComp };
 export { __MultiSelect as MultiSelect };
+export { __SingleSelect as SingleSelect };
 export { DateTimePicker as DateTimePickerComp };
