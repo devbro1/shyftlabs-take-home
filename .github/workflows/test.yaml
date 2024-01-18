@@ -11,10 +11,10 @@ on:
       - "frontend-testing"
 
 env:
-  PROJECT_NAME: refined
-  BASE_PATH: /var/www/apps/refined
-  CURRENT_PATH: /var/www/apps/refined/current
-  DEPLOY_BASE_PATH: /var/www/apps/refined/deployments
+  PROJECT_NAME: practice
+  BASE_PATH: /var/www/apps/practice
+  CURRENT_PATH: /var/www/apps/practice/current
+  DEPLOY_BASE_PATH: /var/www/apps/practice/deployments
 
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: pre-cleanup
         run: |
-          sudo rm -rf /home/runner1/actions-runner/_work/refined/refined/backend
+          sudo rm -rf /home/runner1/actions-runner/_work/practice/practice/backend
       - name: Checkout
         uses: actions/checkout@v3
       - name: build images
@@ -51,7 +51,7 @@ jobs:
 
         docker build --pull --rm -f "docker/node_builder.Dockerfile" -t my-node-app:v1 .
         docker create --name my-node-app-container my-node-app:v1
-        docker cp my-node-app-container:/root/source_code/refined/frontend/build ./frontend/
+        docker cp my-node-app-container:/root/source_code/practice/frontend/build ./frontend/
         docker rm my-node-app-container
 
   run-backend-tests:
@@ -65,7 +65,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: refined_testing
+          POSTGRES_DB: practice_testing
         ports:
           - 5432:5432
     steps:
@@ -79,7 +79,7 @@ jobs:
       - name: prepare
         run: |
           cd backend
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=refined_testing/' .env.testing
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=practice_testing/' .env.testing
           cp .env.testing .env
 
 
@@ -126,7 +126,7 @@ jobs:
 
           pwd
           escaped_string=$(pwd | sed 's/\//\\\//g')
-          sed -i "s/root .*refined/root $escaped_string/" /etc/nginx/nginx.conf
+          sed -i "s/root .*practice/root $escaped_string/" /etc/nginx/nginx.conf
 
           cd frontend
           yarn
@@ -145,7 +145,7 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
           cd frontend
-          export PLAYWRIGHT_DB_CONNECTION="postgresql://postgres:postgres@db:5432/refined_testing"
+          export PLAYWRIGHT_DB_CONNECTION="postgresql://postgres:postgres@db:5432/practice_testing"
           npx playwright install
           mkdir -p /run/php-fpm/
           php-fpm
